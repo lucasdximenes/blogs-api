@@ -1,8 +1,10 @@
 const express = require('express');
-const { userMiddlewares } = require('../middlewares');
+const { userMiddlewares, authMiddleware } = require('../middlewares');
 const { userControllers } = require('../controllers');
 
 const router = express.Router();
+
+router.get('/', authMiddleware.auth, userControllers.getAllUsers);
 
 router.post(
   '/',

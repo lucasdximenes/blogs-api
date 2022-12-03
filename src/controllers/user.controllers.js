@@ -9,9 +9,16 @@ const registerUser = async (req, res) => {
 
   const token = jwt.sign({ data: newUser }, JWT_SECRET, { expiresIn: '7d' });
 
-  res.status(201).json({ token });
+  return res.status(201).json({ token });
+};
+
+const getAllUsers = async (_req, res) => {
+  const users = await userServices.getAll();
+
+  return res.status(200).json(users);
 };
 
 module.exports = {
   registerUser,
+  getAllUsers,
 };
