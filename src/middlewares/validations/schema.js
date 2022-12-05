@@ -39,7 +39,35 @@ const registerBodySchema = Joi.object({
   }),
 });
 
+const createPostBodySchema = Joi.object({
+  title: Joi.string().required().messages({
+    'string.base': '"title" must be a string',
+    'string.empty': '"title" cannot be empty',
+    'any.required': '"title" is required',
+  }),
+  content: Joi.string().required().messages({
+    'string.base': '"content" must be a string',
+    'string.empty': '"content" cannot be empty',
+    'any.required': '"content" is required',
+  }),
+  categoryIds: Joi.array()
+    .items(
+      Joi.number().required().messages({
+        'number.base': '"categoryIds" must be a number',
+        'number.empty': '"categoryIds" cannot be empty',
+        'any.required': '"categoryIds" is required',
+      }),
+    )
+    .required()
+    .messages({
+      'array.base': '"categoryIds" must be an array',
+      'array.empty': '"categoryIds" cannot be empty',
+      'any.required': '"categoryIds" is required',
+    }),
+});
+
 module.exports = {
   loginBodySchema,
   registerBodySchema,
+  createPostBodySchema,
 };

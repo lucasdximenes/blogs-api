@@ -1,4 +1,8 @@
-const { loginBodySchema, registerBodySchema } = require('./schema');
+const {
+  loginBodySchema,
+  registerBodySchema,
+  createPostBodySchema,
+} = require('./schema');
 const ApiErrors = require('../../helpers/apiErrors');
 
 const validateLoginBody = (body) => {
@@ -15,7 +19,15 @@ const validateRegisterBody = (body) => {
   }
 };
 
+const validateCreatePostBody = (body) => {
+  const { error } = createPostBodySchema.validate(body);
+  if (error) {
+    throw new ApiErrors(400, error.message);
+  }
+};
+
 module.exports = {
   validateLoginBody,
   validateRegisterBody,
+  validateCreatePostBody,
 };
