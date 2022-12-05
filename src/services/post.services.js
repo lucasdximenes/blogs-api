@@ -1,6 +1,12 @@
 const { Op } = require('sequelize');
 const ApiErrors = require('../helpers/apiErrors');
-const { Category, BlogPost, PostCategory, sequelize } = require('../models');
+const {
+  User,
+  Category,
+  BlogPost,
+  PostCategory,
+  sequelize,
+} = require('../models');
 
 const verifyIfAllCategoriesExist = async (categoryIds) => {
   const categories = await Category.findAll({
@@ -41,6 +47,19 @@ const create = async (title, content, categoryIds, userId) => {
   }
 };
 
+const getAllFromUser = async (userId) => {
+  const posts = await BlogPost.findAll({
+    where: { userId },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return posts;
+};
+
 module.exports = {
   create,
+  getAllFromUser,
 };
