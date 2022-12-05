@@ -4,6 +4,8 @@ const { postControllers } = require('../controllers');
 
 const router = express.Router();
 
+router.get('/', authMiddleware.auth, postControllers.getAllPostsFromUser);
+
 router.post(
   '/',
   authMiddleware.auth,
