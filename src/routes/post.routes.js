@@ -14,4 +14,11 @@ router.post(
   postControllers.createPost,
 );
 
+router.put(
+  '/:id',
+  authMiddleware.auth,
+  postMiddlewares.validatePostUpdateBody,
+  postControllers.updatePost,
+);
+
 module.exports = router;
