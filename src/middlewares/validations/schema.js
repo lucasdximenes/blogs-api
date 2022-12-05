@@ -66,8 +66,22 @@ const createPostBodySchema = Joi.object({
     }),
 });
 
+const updatePostBodySchema = Joi.object({
+  title: Joi.string().required().messages({
+    'string.base': '"title" must be a string',
+    'string.empty': '"title" cannot be empty',
+    'any.required': '"title" is required',
+  }),
+  content: Joi.string().required().messages({
+    'string.base': '"content" must be a string',
+    'string.empty': '"content" cannot be empty',
+    'any.required': '"content" is required',
+  }),
+});
+
 module.exports = {
   loginBodySchema,
   registerBodySchema,
   createPostBodySchema,
+  updatePostBodySchema,
 };
