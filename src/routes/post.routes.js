@@ -21,4 +21,6 @@ router.put(
   postControllers.updatePost,
 );
 
+router.delete('/:id', authMiddleware.auth, postControllers.deletePost);
+
 module.exports = router;
