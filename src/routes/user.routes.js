@@ -13,4 +13,6 @@ router.post(
   userControllers.registerUser,
 );
 
+router.delete('/me', authMiddleware.auth, userControllers.deleteUser);
+
 module.exports = router;
