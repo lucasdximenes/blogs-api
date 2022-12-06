@@ -86,9 +86,19 @@ const update = async (id, title, content, userId) => {
   return getById(id);
 };
 
+const remove = async (id, userId) => {
+  const post = await getById(id);
+  if (post.userId !== userId) {
+    throw new ApiErrors(401, 'Unauthorized user');
+  }
+
+  await BlogPost.destroy({ where: { id } });
+};
+
 module.exports = {
   create,
   getAllFromUser,
   getById,
   update,
+  remove,
 };
