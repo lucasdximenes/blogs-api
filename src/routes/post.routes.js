@@ -4,6 +4,7 @@ const { postControllers } = require('../controllers');
 
 const router = express.Router();
 
+router.get('/search', authMiddleware.auth, postControllers.searchPost);
 router.get('/', authMiddleware.auth, postControllers.getAllPostsFromUser);
 router.get('/:id', authMiddleware.auth, postControllers.getPostById);
 
