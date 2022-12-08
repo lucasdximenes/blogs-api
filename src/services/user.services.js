@@ -1,5 +1,8 @@
+const bcrypt = require('bcrypt');
 const { User } = require('../models');
 const ApiErrors = require('../helpers/apiErrors');
+
+const saltRounds = 10;
 
 const create = async (user) => {
   const { email } = user;
@@ -7,7 +10,12 @@ const create = async (user) => {
   if (userExists) {
     throw new ApiErrors(409, 'User already registered');
   }
-  const newUser = await User.create(user);
+
+  const { password } = user;
+  const hash = await bcrypt.hash(password, saltRounds);
+  const hashedUser = { ...user, password: hash };
+
+  const newUser = await User.create(hashedUser);
   return newUser;
 };
 
