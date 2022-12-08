@@ -1,0 +1,1106 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Blog API",
+    "version": "1.0.0",
+    "description": "This is a simple API for a blog application with basic CRUD operations and authentication.",
+    "contact": {
+      "name": "Lucas Ximenes",
+      "email": "lucasdximenes@gmail.com",
+      "url": "https://github.com/lucasdximenes"
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Login to the application",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "Login credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some fields are missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "summary": "Create user",
+        "description": "Create a new user",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "description": "User data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some fields are missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users",
+        "description": "Get all users",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/getUser"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "description": "Get user by id",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "summary": "Create category",
+        "description": "Create a new category",
+        "tags": [
+          "Category"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "requestBody": {
+          "description": "Category data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Category name"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Category id"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Category name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some fields are missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all categories",
+        "description": "Get all categories",
+        "tags": [
+          "Category"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categories retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "description": "Category id"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Category name"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post": {
+      "post": {
+        "summary": "Create post",
+        "description": "Create a new post",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "requestBody": {
+          "description": "Post data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Post title"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Post content"
+                  },
+                  "category": {
+                    "type": "array",
+                    "description": "Category id",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "title",
+                  "content",
+                  "category"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getPost"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some fields are missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all posts",
+        "description": "Get all posts",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/getAllPosts"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/{id}": {
+      "get": {
+        "summary": "Get post by id",
+        "description": "Get post by id",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Post id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getAllPosts"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update post",
+        "description": "Update post",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Post id"
+          }
+        ],
+        "requestBody": {
+          "description": "Post data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Post title"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Post content"
+                  }
+                },
+                "required": [
+                  "title",
+                  "content"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getAllPosts"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some fields are missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired, invalid or user is not the owner of the post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete post",
+        "description": "Delete post",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Post id"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Post deleted"
+          },
+          "401": {
+            "description": "Token not found, expired, invalid or user is not the owner of the post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "delete": {
+        "summary": "Delete user",
+        "description": "Delete user",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          },
+          "401": {
+            "description": "Token not found, expired, invalid or user is not the owner of user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/search": {
+      "get": {
+        "summary": "Search posts",
+        "description": "Search posts",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt"
+            },
+            "required": true,
+            "description": "JWT token"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Search query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/getAllPosts"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found, expired or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "jwt"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "User display name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "User password"
+          },
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "User image"
+          }
+        },
+        "required": [
+          "displayName",
+          "email",
+          "password"
+        ]
+      },
+      "getUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "User id"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "User display name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email"
+          },
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "User image"
+          }
+        }
+      },
+      "getPost": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Post id"
+          },
+          "title": {
+            "type": "string",
+            "description": "Post title"
+          },
+          "content": {
+            "type": "string",
+            "description": "Post content"
+          },
+          "userId": {
+            "type": "number",
+            "description": "User id"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Post updated date"
+          },
+          "published": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Post published date"
+          }
+        }
+      },
+      "getAllPosts": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Post id"
+          },
+          "title": {
+            "type": "string",
+            "description": "Post title"
+          },
+          "content": {
+            "type": "string",
+            "description": "Post content"
+          },
+          "userId": {
+            "type": "number",
+            "description": "User id"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Post updated date"
+          },
+          "published": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Post published date"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "description": "User id"
+              },
+              "displayName": {
+                "type": "string",
+                "description": "User display name"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "User email"
+              },
+              "image": {
+                "type": "string",
+                "format": "url",
+                "description": "User image"
+              }
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Post categories",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "Category id"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Category name"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
