@@ -123,6 +123,8 @@ npm start # or npm run dev
 
 You can access the documentation by going to endpoint `/api-docs` in your browser. For example, if you are running the API locally in `3001` port, you can access it by going to [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
 
-![API Documentation](./public/api-docs.mp4)
+![API Documentation](https://user-images.githubusercontent.com/71415845/206444981-bc356b45-5930-4fae-8065-5e9921e25788.mp4)
+
+
 
 ---
